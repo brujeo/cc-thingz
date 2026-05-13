@@ -252,6 +252,13 @@ Same pattern works for any prompt or agent file — just mirror the path under t
 Bundled prompts: `task.md`, `fixer.md`, `review.md`, `codex-review.md`, `finalizer.md`, `progress-file.md`
 Bundled agents: `quality.txt`, `implementation.txt`, `testing.txt`, `simplification.txt`, `documentation.txt`, `smells.txt`
 
+**Customization patterns** — two common shapes:
+
+- *Route the review fanout to named specialists.* Override `prompts/review.md` to launch named Claude Code subagents (`qa-expert`, `code-quality`, `go-test-expert`, `implementation-reviewer`, `documentation`) instead of generic `general-purpose`. The override controls the `subagent_type` for each parallel specialist.
+- *Delegate to an existing skill.* Override a prompt or agent file to instruct the spawned subagent to read another skill's `SKILL.md` and follow its workflow. Examples: override `agents/smells.txt` to delegate to a `/smells` skill; override `prompts/finalizer.md` to delegate to a `/rebase-commits` skill. Useful when an installed skill captures the workflow better than the bundled default.
+
+**Constraint** — subagents in current Claude Code do not have the Agent tool, so they cannot spawn other subagents. `prompts/review.md` is therefore read by the main session orchestrator directly (used as a playbook), not given to a subagent — that is how the 5-specialist fanout actually runs in parallel. Single-agent leaf work (`task.md`, `fixer.md`, `finalizer.md`, `codex-review.md`, `agents/smells.txt`) runs as a spawned subagent because no further fan-out is needed. Any custom override that needs to fan out must follow the same playbook pattern.
+
 Configuration via `userConfig` (prompted at plugin install):
 
 | Key | Default | Description |
