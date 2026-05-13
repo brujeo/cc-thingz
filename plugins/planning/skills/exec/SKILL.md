@@ -53,16 +53,45 @@ Note: in `hg` repos, detect-branch.sh returns `remote/<name>` (checking `master`
 
 **hg skip**: Detect VCS with `vcs=$(bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/detect-vcs.sh)`. If `vcs` is `hg`, skip the worktree question and proceed in current directory. The `EnterWorktree` tool is git-only (wraps `git worktree add`) and has no hg equivalent upstream; users who want isolation in hg repos can use `hg share` manually before invoking `/exec`.
 
-**MANDATORY: Always ask via AskUserQuestion, even in auto mode.** This is not a routine decision — the worktree choice affects whether the user can keep working in the main repo during execution, and whether their working directory gets touched. Do NOT skip, do NOT assume "current directory" because the project is small or the run looks short. Pose the question and wait for the answer.
+First detect current branch state — run `git branch --show-current` and compare with the default branch detected earlier (from `detect-branch.sh`). Two cases:
 
-Question to ask the user via AskUserQuestion — whether to run in an isolated git worktree or in the current working directory:
+**Case A — currently on the default branch (master/main/trunk).** Step 4 will create a new feature branch. Ask the user where it should live. Invoke the **AskUserQuestion** tool with this payload:
 
-- **Worktree** — creates an isolated copy of the repo, all work happens there. Clean separation from the main working directory. Best for long-running plans where you want to keep working in the main repo.
-- **Current directory** — works directly in the current repo. Simpler, but blocks the working directory during execution.
+```json
+{
+  "questions": [{
+    "question": "Where should the feature branch be created?",
+    "header": "Branch location",
+    "options": [
+      {"label": "Worktree (isolated)", "description": "Create the feature branch in a new isolated git worktree (under .claude/worktrees/). Main working directory stays on the default branch."},
+      {"label": "In-place", "description": "Create the feature branch in this working directory. Main directory switches to the feature branch for the duration of the run."}
+    ],
+    "multiSelect": false
+  }]
+}
+```
 
-If user chooses "Worktree", use `EnterWorktree` tool to create an isolated worktree before proceeding. All subsequent steps (branch creation, task execution, reviews, finalize) happen inside the worktree. At completion, report the worktree path and branch so the user can review and merge.
+**Case B — currently on a feature branch.** Step 4 will keep using this branch. Ask whether to move it to an isolated worktree or stay here. Invoke the **AskUserQuestion** tool with this payload:
 
-If user chooses "Current directory", proceed normally without worktree.
+```json
+{
+  "questions": [{
+    "question": "You're already on a feature branch. Run the plan here, or in an isolated worktree?",
+    "header": "Isolation",
+    "options": [
+      {"label": "Stay here", "description": "Run the plan in this working directory, on the existing feature branch."},
+      {"label": "Move to worktree", "description": "Copy this branch into a new isolated git worktree (under .claude/worktrees/). Main directory stays untouched."}
+    ],
+    "multiSelect": false
+  }]
+}
+```
+
+In BOTH cases: invoke the AskUserQuestion tool **now**, do not generate text first, do not skip, do not assume. Auto mode does NOT exempt this question — the choice affects the user's working directory and the orchestrator cannot decide on their behalf.
+
+If user picks "Worktree (isolated)" or "Move to worktree", use the `EnterWorktree` tool to create an isolated worktree before proceeding. All subsequent steps (branch creation, task execution, reviews, finalize, stats) happen inside the worktree. At completion, report the worktree path and branch so the user can review and merge.
+
+If user picks "In-place" or "Stay here", proceed normally without worktree.
 
 ### Step 3. Create task list
 
