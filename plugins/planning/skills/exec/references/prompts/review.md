@@ -1,10 +1,10 @@
-# Review orchestration prompt
+# Review fanout playbook
 
-Use this prompt when spawning the review agent (replace `DEFAULT_BRANCH`, `PLAN_FILE_PATH`, `PROGRESS_FILE_PATH`, `REVIEW_PHASE`, `RESOLVE_SCRIPT`, and `PLUGIN_DATA_DIR`).
+This file is a playbook for the main orchestrator session — NOT a prompt to spawn into a subagent. Subagents do not have access to the Agent tool in current Claude Code, so the parallel fanout below must be initiated from the main session.
 
-The review agent launches individual review agents, collects findings, and reports back. It does NOT fix anything — the orchestrator passes findings to the fixer.
+Resolve placeholders (`DEFAULT_BRANCH`, `PLAN_FILE_PATH`, `PROGRESS_FILE_PATH`, `REVIEW_PHASE`, `RESOLVE_SCRIPT`, `PLUGIN_DATA_DIR`), then follow the instructions below from the main session: launch the specified parallel Agent calls, collect findings from all returned agents, and pass them to the fixer subagent. The orchestrator does NOT fix issues itself — the fixer is a separate subagent that handles fixes.
 
-## Phase 1 — comprehensive (5 agents)
+## Comprehensive mode (5 agents)
 
 Used when `REVIEW_PHASE` is `comprehensive`.
 
@@ -36,14 +36,14 @@ After ALL 5 agents return:
 - ONLY include agents that reported actual issues — omit agents that found nothing
 - List each finding as: agent-name: file:line — description
 
-## Phase 2 — critical only (2 agents)
+## Critical-only mode (2 agents)
 
 Used when `REVIEW_PHASE` is `critical`.
 
 Resolve only `quality.txt` and `implementation.txt` using the resolve script. Prepend each agent prompt with: "Report ONLY critical and major issues — bugs, security vulnerabilities, data loss risks, broken functionality, incorrect logic, missing critical error handling. Ignore style, minor improvements, suggestions."
 
-Launch both in parallel. Same format as Phase 1.
+Launch both in parallel. Same format as comprehensive mode.
 
 After BOTH agents return:
-- Same collection/deduplication as Phase 1
+- Same collection/deduplication as comprehensive mode
 - Only keep critical/major severity findings
