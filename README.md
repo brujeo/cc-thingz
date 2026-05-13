@@ -226,7 +226,7 @@ Run tests: `python3 plugins/planning/hooks/plan-annotate.py --test`
 1. **Task loop** — one subagent per task section, commits after each, retries on failure
 2. **Comprehensive review** — 5 parallel agents (quality, implementation, testing, simplification, documentation) + fixer
 3. **Code smells** — smells agent checks conventions, CLAUDE.md rules, code style + fixer
-4. **External review** — auto-detects `codex` CLI or uses custom command, adversarial loop
+4. **External review** — auto-detects `codex` CLI or uses custom command, adversarial loop with severity-aware early exit (stops after the first iteration that finds no critical/major issues; minor findings are still fixed)
 5. **Critical-only review** — 2 agents (quality + implementation), critical/major issues only + fixer
 6. **Finalize** — rebase, squash, verify (optional)
 

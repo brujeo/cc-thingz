@@ -173,7 +173,7 @@ Run once (no loop):
 
 Report to user: "--- Review phase 3: codex external review ---"
 
-Adversarial loop: codex reviews the code, fixer evaluates and fixes, codex re-reviews. Same fixer pattern as Claude reviews.
+Adversarial loop: codex reviews the code, fixer evaluates and fixes, codex re-reviews. The loop exits early once an iteration produces no `CRITICAL` or `MAJOR` findings — minor-only iterations still get fixed by the fixer, but no further codex round-trip happens. Subsequent phases (smells, critical-only) act as the final safety net.
 
 Determine the external review command:
 - If `external_review_cmd` userConfig is set, use that command
@@ -188,13 +188,19 @@ Loop up to `external_review_iterations` times (userConfig, default: 10):
 
 3. **Check codex output** — if codex reports "NO ISSUES FOUND" or equivalent, phase is done. Proceed to step 10.
 
-4. **Report codex findings to user** — show a compact list (one line per finding).
+4. **Classify severity** — scan the codex output for `CRITICAL` or `MAJOR` markers (case-insensitive whole-word match). Set `has_blocking = true` if either is present, otherwise `has_blocking = false`. Findings without an explicit severity tag are treated as MINOR — `has_blocking` stays false in that case.
 
-5. **Spawn a fixer agent** — same as other review phases. Resolve `prompts/fixer.md`, pass codex output as FINDINGS_LIST. Fixer verifies, fixes, commits, reports FIXES.
+5. **Report codex findings to user** — show a compact list (one line per finding).
 
-6. **Report fixer results to user** — show FIXES section. Log to progress file. Loop back to step 1.
+6. **Spawn a fixer agent** — same as other review phases. Resolve `prompts/fixer.md`, pass codex output as FINDINGS_LIST. Fixer verifies, fixes, commits, reports FIXES.
 
-If `external_review_iterations` reached, report "Codex review: max iterations reached, moving on" and continue.
+7. **Report fixer results to user** — show FIXES section. Log to progress file.
+
+8. **Decide whether to loop**:
+   - If `has_blocking` is false → report "Codex review: only minor findings — fixes applied, stopping loop" and proceed to step 10.
+   - Otherwise → loop back to step 1.
+
+If `external_review_iterations` reached with critical/major issues still found, report "Codex review: max iterations reached, moving on" and continue.
 
 ### Step 10. Review phase 4 — critical only
 
