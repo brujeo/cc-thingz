@@ -10,18 +10,6 @@
           }
         ]
       }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "ExitPlanMode",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/plan-review-hook.py",
-            "timeout": 345600
-          }
-        ]
-      }
     ]
   }
 }
