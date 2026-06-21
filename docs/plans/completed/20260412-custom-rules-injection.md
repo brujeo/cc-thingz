@@ -114,14 +114,14 @@
 - [x] make script executable
 - [x] run tests, verify all pass
 
-### Task 4: Add rules injection to planning:make command
+### Task 4: Add rules injection to u-planning:make command
 
 **Files:**
 - Modify: `plugins/planning/commands/make.md`
 
 - [x] add LLM-invoked bash instructions after frontmatter, before step 0 — tell Claude to run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/resolve-rules.sh planning-rules.md` and apply non-empty output as additional rules (appended to, not replacing, the command's built-in instructions)
 - [x] add rules management instructions — when user asks to add/show/clear rules, handle at both project (`.claude/planning-rules.md`) and user (`$CLAUDE_PLUGIN_DATA/planning-rules.md`) levels. Rules guide plan-creation behavior, not embedded in output plan file.
-- [x] verify: create sample rules file, invoke `/planning:make`, confirm rules appear in context
+- [x] verify: create sample rules file, invoke `/u-planning:make`, confirm rules appear in context
 
 ### Task 5: Add rules injection to plan-review agent
 
@@ -133,7 +133,7 @@
 - [x] add instruction to apply user rules when reviewing plan quality, conventions, and testing approach
 - [x] verify: create sample rules file, confirm plan-review agent sees and applies rules
 
-### Task 6: Add rules injection to planning:exec skill
+### Task 6: Add rules injection to u-planning:exec skill
 
 **Files:**
 - Modify: `plugins/planning/skills/exec/SKILL.md`
@@ -190,6 +190,6 @@
 **Manual verification:**
 - install plugins locally (`claude --plugin-dir plugins/planning` and `claude --plugin-dir plugins/brainstorm`)
 - create sample `.claude/planning-rules.md` with Go-specific rules in a test project
-- invoke `/planning:make`, verify rules are loaded and influence plan output
+- invoke `/u-planning:make`, verify rules are loaded and influence plan output
 - invoke brainstorm, verify rules management works
 - test user-level rules via `$CLAUDE_PLUGIN_DATA`

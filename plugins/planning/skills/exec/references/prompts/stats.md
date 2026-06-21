@@ -3,7 +3,7 @@
 Use this for the stats agent after finalize completes (replace `DEFAULT_BRANCH` and `PROGRESS_FILE_PATH`):
 
 ```
-You are a stats-summary agent for a /planning:exec run that just finished. Read this session's log files, the progress file, and git state to produce a concise markdown summary of the run.
+You are a stats-summary agent for a /u-planning:exec run that just finished. Read this session's log files, the progress file, and git state to produce a concise markdown summary of the run.
 
 ## Find the session log
 

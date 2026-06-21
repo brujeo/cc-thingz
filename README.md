@@ -44,7 +44,7 @@ cp -r plugins/review/skills/writing-style ~/.claude/skills/
 chmod +x ~/.claude/skills/git-review/scripts/git-review.py
 ```
 
-Note: update the `/review:writing-style` reference inside `pr/SKILL.md` to `/writing-style` when installed manually.
+Note: update the `/u-review:writing-style` reference inside `pr/SKILL.md` to `/writing-style` when installed manually.
 
 **planning** — command + exec skill + hook:
 ```bash
@@ -156,7 +156,7 @@ Guides a 4-phase dialogue to turn ideas into designs:
 1. **Understand** — gathers project context, asks questions one at a time (multiple choice preferred)
 2. **Explore Approaches** — proposes 2-3 options with trade-offs, leads with recommendation
 3. **Present Design** — breaks design into sections of 200-300 words, validates each incrementally
-4. **Next Steps** — offers to write a plan (`/planning:make`), enter plan mode, or start implementing
+4. **Next Steps** — offers to write a plan (`/u-planning:make`), enter plan mode, or start implementing
 
 ### review
 
@@ -166,7 +166,7 @@ PR review, interactive git diff annotation review, and writing style tools. Inst
 |-----------|---------|-------------|
 | skill | `/review:pr <number>` | PR review with architecture analysis, scope creep detection, and merge workflow |
 | skill | `/review:git-review [ref]` | Interactive git diff annotation review — editor overlay with feedback loop |
-| skill | `/review:writing-style` | Direct technical communication — anti-AI-speak, brevity, no filler |
+| skill | `/u-review:writing-style` | Direct technical communication — anti-AI-speak, brevity, no filler |
 
 **review-pr** — analyzes code quality, architecture, test coverage, and identifies scope creep:
 - **Phase 0** — detects PR vs issue (issues get a simpler comment-only flow)
@@ -174,7 +174,7 @@ PR review, interactive git diff annotation review, and writing style tools. Inst
 - **Phase 1.5** — asks review mode: Full (worktree + tests + linter + architecture) or Quick (diff-only)
 - **Phase 2** — sets up worktree and launches a subagent for deep analysis
 - **Phase 3-4** — presents findings, resolves open design questions
-- **Phase 5** — drafts review comment using `/review:writing-style`, posts as formal review
+- **Phase 5** — drafts review comment using `/u-review:writing-style`, posts as formal review
 - **Post-approve** — recommends merge strategy (rebase vs squash vs merge)
 
 Uses `gh` CLI for all GitHub operations and git worktrees to avoid disrupting the current checkout.
@@ -191,8 +191,8 @@ Structured implementation planning with interactive annotation review and autono
 
 | Component | Trigger | Description |
 |-----------|---------|-------------|
-| command | `/planning:make <desc>` | Structured implementation plan with interactive review loop |
-| skill | `/planning:exec [plan-file]` | Autonomous plan executor — task loop, multi-phase review, optional finalize |
+| command | `/u-planning:make <desc>` | Structured implementation plan with interactive review loop |
+| skill | `/u-planning:exec [plan-file]` | Autonomous plan executor — task loop, multi-phase review, optional finalize |
 | hook | `PreToolUse` / CLI | Plan annotation in `$EDITOR` with diff-based feedback loop |
 | agent | `plan-review` | Automated plan quality review — completeness, over-engineering, testing |
 
@@ -215,7 +215,7 @@ allow_remote_control yes
 listen_on unix:/tmp/kitty-$KITTY_PID
 ```
 
-*Note*: when `revdiff` is installed, the `ExitPlanMode` hook and `/planning:make` interactive review both route through `launch-plan-review.sh` instead, which supports a wider set of overlays: tmux, zellij, kitty, wezterm/kaku, cmux, ghostty, iTerm2, and emacs vterm. The 3-terminal list above applies only to the `$EDITOR` fallback when revdiff is not installed.
+*Note*: when `revdiff` is installed, the `ExitPlanMode` hook and `/u-planning:make` interactive review both route through `launch-plan-review.sh` instead, which supports a wider set of overlays: tmux, zellij, kitty, wezterm/kaku, cmux, ghostty, iTerm2, and emacs vterm. The 3-terminal list above applies only to the `$EDITOR` fallback when revdiff is not installed.
 
 The overlay popup size is configurable via env vars:
 
@@ -228,7 +228,7 @@ Run tests: `python3 plugins/planning/hooks/plan-annotate.py --test`
 
 **plan-review agent** — automated plan quality reviewer. Analyzes plans for problem definition, solution correctness, scope creep, over-engineering, testing requirements, task granularity, and convention adherence. Used by the plan command's "Auto review" option. Outputs a structured report with severity-rated findings and an APPROVE/NEEDS REVISION verdict.
 
-**exec skill** — autonomous plan executor. Takes a plan file (from `/planning:make`) and executes it task-by-task using isolated subagents. Execution phases:
+**exec skill** — autonomous plan executor. Takes a plan file (from `/u-planning:make`) and executes it task-by-task using isolated subagents. Execution phases:
 
 1. **Task loop** — one subagent per task section, commits after each, retries on failure
 2. **Comprehensive review** — 5 parallel agents (quality, implementation, testing, simplification, documentation) + fixer
@@ -306,7 +306,7 @@ Analytical thinking tools for objective analysis.
 | Component | Trigger | Description |
 |-----------|---------|-------------|
 | skill | `/thinking-tools:ask-codex` | Consult OpenAI Codex (GPT-5) for investigation, debugging, or code review |
-| skill | `/thinking-tools:dialectic <statement>` | Prove and counter-prove a statement using parallel agents |
+| skill | `/u-thinking-tools:dialectic <statement>` | Prove and counter-prove a statement using parallel agents |
 | skill | `/thinking-tools:root-cause-investigator` | Systematic 5-Why root cause analysis for errors and bugs |
 
 **ask-codex** — consults OpenAI Codex (GPT-5) as a second opinion for debugging, investigation, or code review. Builds a focused prompt from conversation context, runs codex in read-only sandbox mode in the background, and presents findings with an independent assessment. Requires `codex` CLI to be installed and authenticated.

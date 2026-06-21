@@ -1,5 +1,5 @@
 {
-  "name": "skill-eval",
+  "name": "u-skill-eval",
   "description": "Forces skill evaluation before every response",
   "version": "1.0.0",
   "author": {

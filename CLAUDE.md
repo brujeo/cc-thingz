@@ -20,7 +20,7 @@ Things to make Claude Code even better — hooks, skills, and commands, organize
 - Manual install instructions are kept in README.md as a fallback for users who prefer direct setup.
 - **Versioning** — each plugin has its own `version` in `plugins/<name>/.claude-plugin/plugin.json`. Bump independently per plugin. Use semver: patch for bug fixes, minor for new components, major for breaking changes. **Bump triggers on any change to bundled plugin content** — prompts, agents, references (e.g., `usage.md`), scripts, commands, hooks — not just `.claude-plugin/` files. Anything shipped to consumers via the plugin is a release artifact.
 - **Changelog**: when bumping a plugin version, update `CHANGELOG.md` in the same change. Version headings use the plugin name and plugin version (e.g., `## planning v3.7.1 - YYYY-MM-DD`), not tags. Keep entries grouped like the changelog style: New Features, Improvements, Bug Fixes, Other.
-- **Cross-references** — when skills reference other skills within the same plugin, use the plugin name prefix (e.g., `/review:writing-style`). When referencing skills in other plugins, use that plugin's name (e.g., `/planning:make`).
+- **Cross-references** — when skills reference other skills within the same plugin, use the plugin name prefix (e.g., `/u-review:writing-style`). When referencing skills in other plugins, use that plugin's name (e.g., `/u-planning:make`).
 
 ## Structure
 
@@ -42,7 +42,7 @@ Things to make Claude Code even better — hooks, skills, and commands, organize
 
 ## Known Claude Code Limitations
 
-- **Plugin skill autocomplete** — skills defined in `skills/*/SKILL.md` don't appear in the `/` autocomplete dropdown, only commands in `commands/*.md` do. Skills are still invocable by typing the full name (e.g., `/planning:exec`) or via natural language intent matching.
+- **Plugin skill autocomplete** — skills defined in `skills/*/SKILL.md` don't appear in the `/` autocomplete dropdown, only commands in `commands/*.md` do. Skills are still invocable by typing the full name (e.g., `/u-planning:exec`) or via natural language intent matching.
 - **Plugin hook deny rendering** — PreToolUse hooks that return `permissionDecision: "deny"` display as "blocking error" with an ugly error prefix in the TUI. The same deny from a settings.json hook renders cleanly as a permission prompt. This is a Claude Code rendering issue, not fixable from the plugin side.
 
 ## Testing

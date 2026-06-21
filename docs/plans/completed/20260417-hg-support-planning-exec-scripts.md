@@ -344,7 +344,7 @@ Step 2 asks the user whether to isolate in an `EnterWorktree`. `EnterWorktree` i
 - [x] re-run `bash tests/test-*.sh` — all pass
 - [x] re-run `find . -name '*.sh' -not -path './.git/*' -print0 | xargs -0 shellcheck` — clean
 - [x] re-run `shfmt -d` across touched files — clean
-- [x] end-to-end smoke: scaffold an hg repo with a trivial plan under `docs/plans/20260417-smoke.md` and run `/planning:exec` on it (one task). Verify: branch `smoke` gets set via `hg branch`, task commit lands via `hg commit`, orchestrator skips steps 9 and 11 with the documented message
+- [x] end-to-end smoke: scaffold an hg repo with a trivial plan under `docs/plans/20260417-smoke.md` and run `/u-planning:exec` on it (one task). Verify: branch `smoke` gets set via `hg branch`, task commit lands via `hg commit`, orchestrator skips steps 9 and 11 with the documented message
 - [x] end-to-end smoke: same exercise in a git repo — confirm no behaviour change vs pre-plan (steps 9 and 11 still execute)
 - [x] delete `/tmp/exec-scripts-baseline-$(id -u).txt` after verification passes
 - [x] clean up `/tmp/exec-git-baseline/` and any hg scratch repos
@@ -354,7 +354,7 @@ Step 2 asks the user whether to isolate in an `EnterWorktree`. `EnterWorktree` i
 
 - [x] README.md — add a line in the `plugins/planning/` description noting hg support for the `/exec` skill (scripts are VCS-aware; finalize and external review remain git-only, override via `.claude/exec-plan/` to customise)
 - [x] CLAUDE.md — no change needed; existing conventions (shellcheck/shfmt rules, `${CLAUDE_PLUGIN_ROOT}` usage, plugin versioning) already cover the hg-aware scripts without modification
-- [x] deferred — exec skill completion will archive after reviews and finalize (plan file must stay at current path so `/planning:exec` Review + Finalize phases 7-11 can still read it)
+- [x] deferred — exec skill completion will archive after reviews and finalize (plan file must stay at current path so `/u-planning:exec` Review + Finalize phases 7-11 can still read it)
 
 ## Post-Completion
 
@@ -371,5 +371,5 @@ Step 2 asks the user whether to isolate in an `EnterWorktree`. `EnterWorktree` i
 - Call out the CI mercurial install as part of the change (so reviewers know why ubuntu-latest now pulls mercurial).
 
 **Manual wild-testing** (nice-to-have, not required):
-- Run `/planning:exec` on a real plan in an actual hg project. Confirm branch creation, per-task commits, and finalize/external-review skip all behave as documented.
+- Run `/u-planning:exec` on a real plan in an actual hg project. Confirm branch creation, per-task commits, and finalize/external-review skip all behave as documented.
 - Optional: try the override path — drop a minimal `.claude/exec-plan/prompts/finalizer.md` with `hg rebase -d default` equivalent and confirm it gets picked up.

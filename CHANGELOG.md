@@ -15,7 +15,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### Bug Fixes
 
-- exec: move the finished plan into `docs/plans/completed/` at completion. The plan's final "move to completed/" checkbox was marked `[x]` by a task subagent but the file never moved (the orchestrator explicitly refused, and a mid-run move would break every later phase's `PLAN_FILE_PATH`). Step 13 now performs the move via a VCS-aware `move-plan.sh` (git/hg), committing without pushing, so finished plans leave `docs/plans/` and stop re-appearing as `/planning:exec` candidates.
+- exec: move the finished plan into `docs/plans/completed/` at completion. The plan's final "move to completed/" checkbox was marked `[x]` by a task subagent but the file never moved (the orchestrator explicitly refused, and a mid-run move would break every later phase's `PLAN_FILE_PATH`). Step 13 now performs the move via a VCS-aware `move-plan.sh` (git/hg), committing without pushing, so finished plans leave `docs/plans/` and stop re-appearing as `/u-planning:exec` candidates.
 - exec: forbid task subagents from moving/renaming the plan file. A subagent could interpret the "move to completed/" checkbox as an automatable `git mv` and abort the run when the orchestrator's `PLAN_FILE_PATH` re-read failed; the task prompt now marks such a checkbox `[x]` and leaves the move to the harness.
 
 ## planning v3.7.4 - 2026-06-02
@@ -84,7 +84,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### New Features
 
-- add stats summary phase to `/planning:exec` with wall-clock time, tokens, tool use, agent count, diff stats, commits, and final state 72faf91
+- add stats summary phase to `/u-planning:exec` with wall-clock time, tokens, tool use, agent count, diff stats, commits, and final state 72faf91
 
 ## planning v3.6.8 - 2026-05-13
 
@@ -138,7 +138,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### Bug Fixes
 
-- align brainstorm-generated plan filenames with `/planning:make` 5f947a7
+- align brainstorm-generated plan filenames with `/u-planning:make` 5f947a7
 
 ## planning v3.6.0 - 2026-04-25
 
@@ -163,7 +163,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### New Features
 
-- add Mercurial support to `/planning:exec` helper scripts #15 @paskal
+- add Mercurial support to `/u-planning:exec` helper scripts #15 @paskal
 - add VCS dispatch for branch detection, branch creation, commit staging, and Codex review #15 @paskal
 
 ### Improvements
@@ -204,7 +204,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### New Features
 
-- add custom rules injection to `/planning:make`, `/planning:exec`, and plan-review #13 @umputun
+- add custom rules injection to `/u-planning:make`, `/u-planning:exec`, and plan-review #13 @umputun
 - add `custom-rules.md` and `usage.md` references for planning #13 @umputun
 - add tests for custom-rule resolution #13 @umputun
 
@@ -248,13 +248,13 @@ Entries are sorted by plugin version date, newest first.
 ### Improvements
 
 - replace unnecessary Git-specific prose with generic repository wording #11 @paskal
-- add Solution Overview and TodoWrite guidance to `/planning:make` 1fcf4d4
+- add Solution Overview and TodoWrite guidance to `/u-planning:make` 1fcf4d4
 
 ## brainstorm v2.1.0 - 2026-04-04
 
 ### Improvements
 
-- rename direct skill invocation from `/brainstorm:do` to `/brainstorm:brainstorm` 1ee00db
+- rename direct skill invocation from `/brainstorm:do` to `/u-brainstorm:brainstorm` 1ee00db
 
 ## planning v3.0.3 - 2026-03-31
 
@@ -276,7 +276,7 @@ Entries are sorted by plugin version date, newest first.
 
 ### New Features
 
-- add `Execute autonomously` option to `/planning:make` 76132b3
+- add `Execute autonomously` option to `/u-planning:make` 76132b3
 
 ### Bug Fixes
 
@@ -287,13 +287,13 @@ Entries are sorted by plugin version date, newest first.
 
 ### Bug Fixes
 
-- make `create-branch.sh` usage mandatory in `/planning:exec` f7fc577
+- make `create-branch.sh` usage mandatory in `/u-planning:exec` f7fc577
 
 ## planning v3.0.0 - 2026-03-30
 
 ### New Features
 
-- add `/planning:exec` for autonomous plan execution #8 @umputun
+- add `/u-planning:exec` for autonomous plan execution #8 @umputun
 - add task loop, multi-phase review, fixer agent, optional finalize, and override chain #8 @umputun
 - add bundled exec prompts, agents, and helper scripts #8 @umputun
 
@@ -307,9 +307,9 @@ Entries are sorted by plugin version date, newest first.
 
 ### Bug Fixes
 
-- correct plan-review references to `/planning:make` #6 @bronislav
+- correct plan-review references to `/u-planning:make` #6 @bronislav
 - resolve `$EDITOR` to an absolute path in overlay shells #7 @bronislav
-- replace stale `/action:plan` reference with `/planning:make` 2dfcf67
+- replace stale `/action:plan` reference with `/u-planning:make` 2dfcf67
 
 ## planning v2.1.1 - 2026-03-16
 
@@ -396,7 +396,7 @@ Initial marketplace release.
 
 ### New Features
 
-- add planning plugin with `/planning:make` and plan annotation support 70b947f
+- add planning plugin with `/u-planning:make` and plan annotation support 70b947f
 
 ## release-tools v1.0.0 - 2026-02-17
 

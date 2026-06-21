@@ -2,10 +2,10 @@
 
 The planning plugin has three components: make (plan creation), exec (autonomous execution), and plan-review (quality review agent).
 
-## Make — `/planning:make`
+## Make — `/u-planning:make`
 
 ### Triggers
-- `/planning:make <description>` — create an implementation plan
+- `/u-planning:make <description>` — create an implementation plan
 - invoked automatically by brainstorm when user picks "Write plan"
 
 ### Workflow
@@ -17,10 +17,10 @@ The planning plugin has three components: make (plan creation), exec (autonomous
 
 ### Examples
 ```
-/planning:make add user authentication
-/planning:make fix the race condition in the connection pool
-/planning:make refactor the middleware stack
-/planning:make add my Go testing rules to user-level planning rules
+/u-planning:make add user authentication
+/u-planning:make fix the race condition in the connection pool
+/u-planning:make refactor the middleware stack
+/u-planning:make add my Go testing rules to user-level planning rules
 ```
 
 ### Plan File Structure
@@ -29,10 +29,10 @@ The planning plugin has three components: make (plan creation), exec (autonomous
 - Each task has `**Files:**` block and `[ ]` checkboxes
 - Progress tracking with `[x]`, `➕`, `⚠️` markers
 
-## Exec — `/planning:exec`
+## Exec — `/u-planning:exec`
 
 ### Triggers
-- `/planning:exec [plan-file]` — execute a plan autonomously
+- `/u-planning:exec [plan-file]` — execute a plan autonomously
 - "exec", "execute plan", "run plan"
 
 ### Workflow

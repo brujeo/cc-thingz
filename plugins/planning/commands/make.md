@@ -333,14 +333,14 @@ then use AskUserQuestion:
       "header": "Mode",
       "options": [
         {"label": "Interactive", "description": "Implement task by task in this session"},
-        {"label": "Autonomous", "description": "Run /planning:exec for autonomous execution with reviews"}
+        {"label": "Autonomous", "description": "Run /u-planning:exec for autonomous execution with reviews"}
       ],
       "multiSelect": false
     }]
   }
   ```
   - **Interactive**: begin implementing task 1 interactively in this session. Use TodoWrite tool to track progress and mark todos completed immediately (do not batch)
-  - **Autonomous**: invoke `/planning:exec <plan-file-path>` for autonomous execution with multi-phase review
+  - **Autonomous**: invoke `/u-planning:exec <plan-file-path>` for autonomous execution with multi-phase review
 - **Done**: commit plan with message like "docs: add <topic> implementation plan", stop
 
 ## execution enforcement

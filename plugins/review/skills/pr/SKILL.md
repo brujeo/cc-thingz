@@ -373,7 +373,7 @@ If user already covered everything and there's nothing new → say "no new findi
 Activate writing-style skill for proper tone:
 
 ```
-/review:writing-style
+/u-review:writing-style
 ```
 
 **CRITICAL: Don't restate what the PR does.** The author knows what they built. Focus only on:
